@@ -1458,7 +1458,7 @@ xdrawcursor(int cx, int cy, Glyph g, int ox, int oy, Glyph og)
 			XftDrawRect(xw.draw, &drawcol,
 					borderpx + cx * win.cw,
 					borderpx + (cy + 1) * win.ch - \
-						cursorthickness,
+						cursorthickness - win.cyo,
 					win.cw, cursorthickness);
 			break;
 		case 5: /* Blinking bar */
@@ -1470,22 +1470,30 @@ xdrawcursor(int cx, int cy, Glyph g, int ox, int oy, Glyph og)
 			break;
 		}
 	} else {
-		XftDrawRect(xw.draw, &drawcol,
-				borderpx + cx * win.cw,
-				borderpx + cy * win.ch,
-				win.cw - 1, 1);
-		XftDrawRect(xw.draw, &drawcol,
-				borderpx + cx * win.cw,
-				borderpx + cy * win.ch,
-				1, win.ch - 1);
-		XftDrawRect(xw.draw, &drawcol,
-				borderpx + (cx + 1) * win.cw - 1,
-				borderpx + cy * win.ch,
-				1, win.ch - 1);
-		XftDrawRect(xw.draw, &drawcol,
-				borderpx + cx * win.cw,
-				borderpx + (cy + 1) * win.ch - 1,
-				win.cw, 1);
+		switch (win.cursor) {
+		case 7: /* st extension: snowman (U+2603) */
+			g.u = 0x2603;
+		case 0: /* Blinking Block */
+		case 1: /* Blinking Block (Default) */
+		case 2: /* Steady Block */
+			xdrawglyph(g, cx, cy);
+			break;
+		case 3: /* Blinking Underline */
+		case 4: /* Steady Underline */
+			XftDrawRect(xw.draw, &dc.col[defaultrcs],
+					borderpx + cx * win.cw,
+					borderpx + (cy + 1) * win.ch - \
+						cursorthickness - win.cyo,
+					win.cw, cursorthickness);
+			break;
+		case 5: /* Blinking bar */
+		case 6: /* Steady bar */
+			XftDrawRect(xw.draw, &dc.col[defaultrcs],
+					borderpx + cx * win.cw,
+					borderpx + cy * win.ch,
+					cursorthickness, win.ch);
+			break;
+		}
 	}
 }
 
