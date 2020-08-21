@@ -4,9 +4,9 @@
  * appearance
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
- */
-static char *font = "Dina:scalable=false,Freetype JackeyFont:scalable=false,Freetype Baekmukbig:scalable=false";
-
+ */ 
+static char *font = "Dina:scalable=false JackeyFont:scalable=false Baekmukbig:scalable=false";
+ 
 /* disable bold, italic and roman fonts globally */
 int disablebold = 1;
 int disableitalic = 1;
